@@ -1,0 +1,62 @@
+{
+    "releases" : [
+        {
+            "name": "Isophase",
+            "imageName" : "/artwork/Isophase.jpg",
+            "video": "https://www.youtube.com/embed/uTbGNekZ9SE?si=2M1G5p4UftcexlPY",
+            "desc": "A heavy addition to our discography that builds upon the sound we've been developing since the start. We've been working on this one since the start of Sentient but it was never in a state we could show to you until now."
+        },
+        {
+            "name": "Tidal",
+            "imageName" : "/artwork/Tidal.png",
+            "video": "https://www.youtube.com/embed/2O5XVyO5SZc?si=LFl7IXySpIJwF50b",
+            "desc": "Tidal is an emotional experience that crashes like waves. It's a deeply thoughtful song about grief that dives into the experience and the realities of loss. Open the door and let it envelop you."
+        },
+        {
+            "name": "Be On Your Own Way",
+            "imageName" : "/artwork/BeOnYourWay.jpg",
+            "video": "https://www.youtube.com/embed/zooiw_COQKg?si=99zEIr1a0yFJ7iOQ",
+            "desc": "Our take on Daughter's beautiful song, Be On Your Own Way has a more heavier tone. This song spoke to us on a level we couldn't describe and felt compelled to make a version that was true to us."
+        },
+        {
+            "name": "The Truth That's Behind Us",
+            "imageName" : "/artwork/TheTruthThatsBehindUs.jpg",
+            "video": "https://www.youtube.com/embed/1DqXVfzAMOk?si=0O9uXxZdyYlUVYls",
+            "desc": "The title song of our full length album is another song that we were building on since before Sentient was a band."
+        },
+        {
+            "name": "Red Sky At Morning",
+            "imageName" : "/artwork/RedSkyAtMorning.jpg",
+            "video": "https://www.youtube.com/embed/E-zQnc8YPOM?si=_qMW2LZMxx4OxaTv",
+            "desc": "A deeply emotional song about loss and grappling with the realities and trials life can throw at us."
+        },
+        {
+            "name": "Salt and Light",
+            "imageName" : "/artwork/SaltAndLight.jpg",
+            "video": "https://www.youtube.com/embed/xstwjyruCtg?si=g6Vf7FVy5oDIThhx",
+            "desc": "Cascading is one of the first songs we ever wrote for Salt and Light and for that, will hold a special place in our hearts."
+        }
+],
+"socials" : [
+    {
+        "name": "instagram",
+        "link" : "https://www.instagram.com/sentient.jp/",
+        "src" : "/icon/Instagram-Logo.png"
+    },
+    {
+        "name": "youtube",
+        "link" : "https://www.youtube.com/channel/UCywdw6fckwUzAHxrzHfmMoA",
+        "src": "/icon/Youtube-Logo.png"
+    },
+    {
+        "name": "spotify",
+        "link" : "https://open.spotify.com/artist/6Cc4SibWYc1XHn07bvaXTC?si=h2vSmL58TzCjihClD0hVNw",
+        "src" : "/icon/Spotify-Logo.png"
+    },
+    {
+        "name": "apple",
+        "link" : "https://music.apple.com/us/artist/sentient/1551515794",
+        "src": "/icon/Apple-Logo.png"
+    }
+
+]}

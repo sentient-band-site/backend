@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api/releases", releaseRoutes);
 
 app.listen(PORT, () => {
