@@ -2,7 +2,7 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
 
     // Environment Settings
@@ -34,6 +34,7 @@
 
     // Recommended Options
     "strict": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
     // "verbatimModuleSyntax": true,
