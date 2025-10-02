@@ -116,7 +116,10 @@
     "yn": "^3.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.ts"
   },
   "repository": {
     "type": "git",
@@ -135,10 +138,11 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.0",
     "prisma": "^6.16.2",
+    "ts-node-dev": "^2.0.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2"
   },
-  "prisma" : {
+  "prisma": {
     "seed": "ts-node prisma/seed.ts"
   }
 }
