@@ -47,47 +47,19 @@ export const loginUser = async (email: string, password: string) => {
     const user = await findUniqueCheck(email, password);
     const token = tokenCreate(user)
 
-    // const user = await prisma.user.findUnique({ where: { email } });
-    // if (!user) throw new Error("User not found");
-
-    // const valid = await bcrypt.compare(password, user.password);
-    // if(!valid) throw new Error("Invalid email or password");
-
-
-    // const token = jwt.sign(
-    //     {userId: user.id, role: user.role }, 
-    //     JWT_SECRET, 
-    //     { expiresIn: "1d"}
-    // )
-
     return { token, user };
 };
 
 // DEV ONLY
 
 export const deleteUser = async (email: string) => {
-    const user = await findUniqueCheck(email);
-    // const user = await prisma.user.findUnique({ where: { email }})
-    // if(!user) throw new Error("User not found");
-
+    await findUniqueCheck(email) 
     return await prisma.user.delete({where: { email }});
 };
 
 export const getToken = async (email: string, password: string) => {
     const user = await findUniqueCheck(email, password);
     const token = tokenCreate(user);
-
-    // const user = await prisma.user.findUnique({where: {email}});
-    // if(!user) throw new Error("User not found");
-
-
-    // const valid = await bcrypt.compare(password, user.password);
-    // if(!valid) throw new Error("Invalid email or password");
-    // const token = jwt.sign(
-    //     {id: user.id, role: user.role},
-    //     process.env.JWT_SECRET as string,
-    //     {expiresIn: "1d"}
-    // );
 
     return token;
 };
