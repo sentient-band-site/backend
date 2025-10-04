@@ -11,6 +11,12 @@ interface AuthReqest extends Request {
     }
 };
 
+interface jwtPayload {
+    id: number;
+    role: string;
+    email: string;
+}
+
 export const authenticateToken = (req: AuthReqest, res: Response, next: NextFunction) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
@@ -20,11 +26,7 @@ export const authenticateToken = (req: AuthReqest, res: Response, next: NextFunc
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET) as {
-            id: number;
-            role: string;
-            email: string;
-        };
+        const decoded = jwt.verify(token, JWT_SECRET) as jwtPayload;
         req.user = decoded;
         next();
     } catch(err) {

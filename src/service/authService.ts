@@ -31,11 +31,17 @@ const tokenCreate = (user: User) => {
 export const registerUser = async (data: { email: string; password: string; }) => {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
+    const adminExists = await prisma.user.findFirst({
+        where: {role: "admin"},
+    });
+
+    const role = adminExists ? "customer" : "admin";
+
     const user = await prisma.user.create({
         data: {
             email: data.email,
             password: hashedPassword,
-            role: "customer",
+            role,
         },
     })
 

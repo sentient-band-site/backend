@@ -10,7 +10,11 @@ router.post("/register", async(req, res) => {
     
     try {
         const user = await registerUser({ email, password });
-        res.status(201).json({id: user.id, email: user.email, role: user.role});
+        res.status(201).json({
+            id: user.id, 
+            email: user.email, 
+            role: user.role
+        });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
     }
