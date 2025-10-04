@@ -1,14 +1,20 @@
 import express from "express"
-import { registerUser, loginUser, deleteUser, getToken } from "../service/authService";
+import { registerUser, loginUser, deleteUser, getToken, changeUserRole } from "../service/authService";
+import { authenticateToken } from "../middleware/auth";
 
 const router = express.Router();
+const SUPER_ADMINS = ["bcook2289@gmail.com"]
 
 router.post("/register", async(req, res) => {
     const { email, password } = req.body;
     
     try {
         const user = await registerUser({ email, password });
-        res.status(201).json({id: user.id, email: user.email, role: user.role});
+        res.status(201).json({
+            id: user.id, 
+            email: user.email, 
+            role: user.role
+        });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
     }
@@ -53,6 +59,25 @@ router.post("/token", async(req, res) => {
     } catch (err: any) {
         res.status(400).json({ error: err.message })
     }
-})
+});
+
+// DEV ONLY
+router.put("/role", authenticateToken, async (req: any, res) => {
+    const {email, role} = req.body;
+
+    if(!SUPER_ADMINS.includes(req.user.email)) {
+        return res.status(403).json({error: "You do not have permission to change roles"})
+    }
+
+    try {
+        const updatedUser = await changeUserRole(email, role);
+        res.status(200).json({
+            message: `User ${email} role updated to ${role}`,
+            user: updatedUser,
+        });
+    } catch(err: any) {
+        res.status(400).json({error: err.message});
+    }
+});
 
 export default router;

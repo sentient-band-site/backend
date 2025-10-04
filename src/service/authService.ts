@@ -5,7 +5,6 @@ import { User } from "@prisma/client";
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
-// TODO: findUniqueCheck function
 const findUniqueCheck = async (email: string, password?: string): Promise<User> => {
     const user = await prisma.user.findUnique({where: {email}})
     if (!user) throw new Error("User not found");
@@ -15,15 +14,15 @@ const findUniqueCheck = async (email: string, password?: string): Promise<User> 
     }
     return user;
 };
-// TODO: isValidCheck function
+
 const isValidCheck = async (user: User, password: string) => {
     const valid = await bcrypt.compare(password, user.password);
     if(!valid) throw new Error("Invalid email or password")
 };
-// TODO: token function
+
 const tokenCreate = (user: User) => {
     return jwt.sign(
-        {id: user.id, role: user.role},
+        {id: user.id, role: user.role, email: user.email},
         process.env.JWT_SECRET as string,
         {expiresIn: "1d"}
     );
@@ -32,11 +31,17 @@ const tokenCreate = (user: User) => {
 export const registerUser = async (data: { email: string; password: string; }) => {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
+    const adminExists = await prisma.user.findFirst({
+        where: {role: "admin"},
+    });
+
+    const role = adminExists ? "customer" : "admin";
+
     const user = await prisma.user.create({
         data: {
             email: data.email,
             password: hashedPassword,
-            role: "customer",
+            role,
         },
     })
 
@@ -62,4 +67,19 @@ export const getToken = async (email: string, password: string) => {
     const token = tokenCreate(user);
 
     return token;
+};
+
+export const changeUserRole = async (email: string, role: string) => {
+    await findUniqueCheck(email);
+
+    const acceptedRoles = ["admin", "customer"];
+
+    if (acceptedRoles.includes(role)) {
+        return await prisma.user.update({
+            where: {email},
+            data: {role},
+        })
+    } else {
+        throw new Error("Invalid Data");
+    }
 };
