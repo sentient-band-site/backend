@@ -1,23 +1,24 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import type {AuthRequest, jwtPayload} from "../types/common"
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
-interface AuthReqest extends Request {
-    user?: {
-        id: number;
-        role: string;
-        email: string;
-    }
-};
+// interface AuthRequest extends Request {
+//     user?: {
+//         id: number;
+//         role: string;
+//         email: string;
+//     }
+// };
 
-interface jwtPayload {
-    id: number;
-    role: string;
-    email: string;
-}
+// interface jwtPayload {
+//     id: number;
+//     role: string;
+//     email: string;
+// }
 
-export const authenticateToken = (req: AuthReqest, res: Response, next: NextFunction) => {
+export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies?.token;
 
     if (!token) {
@@ -33,7 +34,7 @@ export const authenticateToken = (req: AuthReqest, res: Response, next: NextFunc
     };
 };
 
-export const requireAdmin = (req: AuthReqest, res: Response, next: NextFunction) => {
+export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
     if (req.user?.role !== "admin") {
         return res.status(403).json({error: "Admin access required" });
     }
