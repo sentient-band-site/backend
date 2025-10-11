@@ -24,7 +24,22 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
         const {token, user } = await loginUser(email, password);
-        res.json({token, user: {id: user.id, email: user.email, role: user.role } });
+        // res.json({token, user: {id: user.id, email: user.email, role: user.role } });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+
+        res.status(200).json({
+            message: "Login Successful",
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role,
+            }
+        })
     } catch (err: any) {
         res.status(400).json({error: err.message});
     }

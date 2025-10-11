@@ -1,21 +1,31 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import releaseRoutes from "./routes/releases";
 import authRoutes from "./routes/auth";
-// import { authenticateToken } from "./middleware/auth";
+import { authenticateToken } from "./middleware/auth";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+  })
+);
+
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use("/api/releases", releaseRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authenticateToken, authRoutes);
 
 app.get("/", (_req, res) => {
   res.send("running")
