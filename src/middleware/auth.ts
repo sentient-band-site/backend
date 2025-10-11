@@ -1,22 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-// import type {AuthRequest, jwtPayload} from "../types/common"
+import type {AuthRequest, jwtPayload} from "../types/common"
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
-interface AuthRequest extends Request {
-    user?: {
-        id: number;
-        role: string;
-        email: string;
-    }
-};
+// interface AuthRequest extends Request {
+//     user?: {
+//         id: number;
+//         role: string;
+//         email: string;
+//     }
+// };
 
-interface jwtPayload {
-    id: number;
-    role: string;
-    email: string;
-}
+// interface jwtPayload {
+//     id: number;
+//     role: string;
+//     email: string;
+// }
 
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies?.token;

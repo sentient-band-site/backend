@@ -1,14 +1,7 @@
 import express from "express"
 import { registerUser, loginUser, deleteUser, getToken, changeUserRole } from "../service/authService";
 import { authenticateToken } from "../middleware/auth";
-
-interface AuthRequest extends Request {
-    user?: {
-        id: number;
-        role: string;
-        email: string;
-    }
-};
+import { AuthRequest } from "../types/common";
 
 const router = express.Router();
 const SUPER_ADMINS = ["bcook2289@gmail.com"]
@@ -53,7 +46,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/me", authenticateToken, async( req: AuthRequest, res:Response ) => {
+router.get("/me", authenticateToken, async( req: AuthRequest, res) => {
     res.json({user: req.user});
 })
 
