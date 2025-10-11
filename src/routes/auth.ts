@@ -2,6 +2,14 @@ import express from "express"
 import { registerUser, loginUser, deleteUser, getToken, changeUserRole } from "../service/authService";
 import { authenticateToken } from "../middleware/auth";
 
+interface AuthRequest extends Request {
+    user?: {
+        id: number;
+        role: string;
+        email: string;
+    }
+};
+
 const router = express.Router();
 const SUPER_ADMINS = ["bcook2289@gmail.com"]
 
@@ -44,6 +52,10 @@ router.post("/login", async (req, res) => {
         res.status(400).json({error: err.message});
     }
 });
+
+router.get("/me", authenticateToken, async( req: AuthRequest, res:Response ) => {
+    res.json({user: req.user});
+})
 
 router.delete("/delete", async(req, res) => {
     const {email} = req.body;

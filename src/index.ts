@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import releaseRoutes from "./routes/releases";
 import authRoutes from "./routes/auth";
-import { authenticateToken } from "./middleware/auth";
 
 dotenv.config();
 
@@ -25,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use("/api/releases", releaseRoutes);
-app.use("/api/auth", authenticateToken, authRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (_req, res) => {
   res.send("running")
