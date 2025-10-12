@@ -1,5 +1,5 @@
 import express from "express"
-import { registerUser, loginUser, logoutUser, deleteUser, getToken, changeUserRole } from "../service/authService";
+import { registerUser, loginUser, deleteUser, getToken, changeUserRole } from "../service/authService";
 import { authenticateToken } from "../middleware/auth";
 import { AuthRequest } from "../types/common";
 
