@@ -1,5 +1,5 @@
 import express from "express"
-import { registerUser, loginUser, deleteUser, getToken, changeUserRole } from "../service/authService";
+import { registerUser, loginUser, logoutUser, deleteUser, getToken, changeUserRole } from "../service/authService";
 import { authenticateToken } from "../middleware/auth";
 import { AuthRequest } from "../types/common";
 
@@ -25,7 +25,6 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
         const {token, user } = await loginUser(email, password);
-        // res.json({token, user: {id: user.id, email: user.email, role: user.role } });
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
@@ -45,6 +44,16 @@ router.post("/login", async (req, res) => {
         res.status(400).json({error: err.message});
     }
 });
+
+router.post("/logout", async (req, res) => {
+    try {
+        res.status(200).json({
+            message: "Logout Successful"
+        })
+    } catch (err: any) {
+        res.status(400).json({error: err.message});
+    }
+})
 
 router.get("/me", authenticateToken, async( req: AuthRequest, res) => {
     res.json({user: req.user});
