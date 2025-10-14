@@ -10,14 +10,16 @@ const findUniqueCheck = async (email: string, password?: string): Promise<User> 
     if (!user) throw new Error("User not found");
     
     if(password) {
-        isValidCheck(user, password);
+        await isValidCheck(user, password);
     }
     return user;
 };
 
 const isValidCheck = async (user: User, password: string) => {
     const valid = await bcrypt.compare(password, user.password);
-    if(!valid) throw new Error("Invalid password")
+    if(!valid) {
+        throw new Error("Invalid password")
+    } 
 };
 
 const tokenCreate = (user: User) => {
