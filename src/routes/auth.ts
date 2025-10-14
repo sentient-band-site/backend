@@ -11,13 +11,13 @@ router.post("/register", async(req, res) => {
     
     try {
         const user = await registerUser({ email, password });
-        res.status(201).json({
+        return res.status(201).json({
             id: user.id, 
             email: user.email, 
             role: user.role
         });
     } catch (err: any) {
-        res.status(400).json({ error: err.message });
+        return res.status(400).json({ error: err.message });
     }
 });
 
@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Login Successful",
             user: {
                 id: user.id,
@@ -41,22 +41,28 @@ router.post("/login", async (req, res) => {
             }
         })
     } catch (err: any) {
-        res.status(400).json({error: err.message});
+        if(err.message.includes("password")) {
+            return res.status(401).json({error: "Incorrect password"});
+        } else if (err.message.includes("not found")) {
+            return res.status(404).json({error: "User not found"});
+        }
+        console.error("Unexpected error: ", err);
+        return res.status(500).json({error: "Something went wrong on our end"});
     }
 });
 
-router.post("/logout", async (req, res) => {
+router.post("/logout", async (_req, res) => {
     try {
-        res.status(200).json({
+        return res.status(200).json({
             message: "Logout Successful"
         })
     } catch (err: any) {
-        res.status(400).json({error: err.message});
+        return res.status(400).json({error: err.message});
     }
 })
 
 router.get("/me", authenticateToken, async( req: AuthRequest, res) => {
-    res.json({user: req.user});
+    return res.json({user: req.user});
 })
 
 router.delete("/delete", async(req, res) => {
@@ -67,9 +73,9 @@ router.delete("/delete", async(req, res) => {
 
     try {
         await deleteUser(email);
-        res.status(200).json({message: `User with email ${email} deleted.`});
+        return res.status(200).json({message: `User with email ${email} deleted.`});
     } catch (err: any) {
-        res.status(400).json({error: err.message});
+        return res.status(400).json({error: err.message});
     }
 });
 
@@ -84,9 +90,9 @@ router.post("/token", async(req, res) => {
 
     try {
         const token = await getToken(email, password);
-        res.status(200).json({token})
+        return res.status(200).json({token})
     } catch (err: any) {
-        res.status(400).json({ error: err.message })
+        return res.status(400).json({ error: err.message })
     }
 });
 
@@ -100,12 +106,12 @@ router.put("/role", authenticateToken, async (req: any, res) => {
 
     try {
         const updatedUser = await changeUserRole(email, role);
-        res.status(200).json({
+        return res.status(200).json({
             message: `User ${email} role updated to ${role}`,
             user: updatedUser,
         });
     } catch(err: any) {
-        res.status(400).json({error: err.message});
+        return res.status(400).json({error: err.message});
     }
 });
 
