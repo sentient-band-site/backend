@@ -41,11 +41,9 @@ router.post("/login", async (req, res) => {
             }
         })
     } catch (err: any) {
-        if(err.message.includes("password")) {
-            return res.status(401).json({error: "Incorrect password"});
-        } else if (err.message.includes("not found")) {
-            return res.status(404).json({error: "User not found"});
-        }
+        if(err.message.includes("password") || err.message.includes("User not found")) {
+            return res.status(401).json({error: "Invalid email or password"});
+        } 
         console.error("Unexpected error: ", err);
         return res.status(500).json({error: "Something went wrong on our end"});
     }
