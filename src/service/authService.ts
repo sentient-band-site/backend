@@ -57,6 +57,10 @@ export const loginUser = async (email: string, password: string) => {
     return { token, user };
 };
 
+export const logoutUser = async () => {
+    return {message: "Logout Successful"}
+}
+
 // DEV ONLY
 
 export const deleteUser = async (email: string) => {
