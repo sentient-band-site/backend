@@ -10,38 +10,44 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:3000",
-].filter((origin): origin is string => Boolean(origin));
-
-// const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
-
-// app.use(
-//   cors({
-//     origin: FRONTEND_URL,
-//     credentials: true,
-//   })
-// );
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 app.use((req, _res, next) => {
-  console.log("CORS Origin check:", req.headers.origin);
+  console.log("Origin: ", req.headers.origin);
+  console.log("FRONTEND_URL", FRONTEND_URL)
   next();
-});
+})
 
 app.use(
   cors({
-    origin: function(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn("Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: FRONTEND_URL,
     credentials: true,
   })
 );
+
+// const allowedOrigins = [
+//   process.env.FRONTEND_URL,
+//   "http://localhost:3000",
+// ].filter((origin): origin is string => Boolean(origin));
+
+// app.use((req, _res, next) => {
+//   console.log("CORS Origin check:", req.headers.origin);
+//   next();
+// });
+
+// app.use(
+//   cors({
+//     origin: function(origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         console.warn("Blocked by CORS:", origin);
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
 
 // app.options("*", cors({
 //   origin: allowedOrigins,
