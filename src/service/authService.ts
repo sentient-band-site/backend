@@ -3,21 +3,35 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
-
 const findUniqueCheck = async (email: string, password?: string): Promise<User> => {
+    console.log("findUniqueCheck: finding user with email:", email);
+
     const user = await prisma.user.findUnique({where: {email}})
-    if (!user) throw new Error("User not found");
+    console.log("findUniqueCheck: Database query result:", user ? "User found" : "User NOT found");
+
+    if (!user) {
+        console.log("findUniqueCheck: ERROR: No user in database with email:", email);
+        throw new Error("User not found");
+    }
     
     if(password) {
+        console.log("findUniqueCheck: validating passowrd...")
         await isValidCheck(user, password);
+        console.log("findUniqueCheck: password validation passed")
     }
     return user;
 };
 
 const isValidCheck = async (user: User, password: string) => {
+    console.log("isValidCheck: comparing password for user:", user.email);
+    console.log("isValidCheck: stored hash exists:", !!user.password);
+    console.log("Has starts with $2:", user.password?.startsWith('$2'));
+
     const valid = await bcrypt.compare(password, user.password);
+    console.log("isValidCheck: Password comparison result:", valid);
+
     if(!valid) {
+        console.log("isValidCheck: ERROR: Invalid password for user", user.email);
         throw new Error("Invalid password")
     } 
 };
@@ -51,10 +65,23 @@ export const registerUser = async (data: { email: string; password: string; }) =
 };
 
 export const loginUser = async (email: string, password: string) => {
-    const user = await findUniqueCheck(email, password);
-    const token = tokenCreate(user)
+    console.log("LOGIN ATTEMPT");
+    console.log("Email", email);
+    console.log("Password received", password ? "YES" : "NO");
+    
+    try{
+        const user = await findUniqueCheck(email, password);
+        console.log("User found:", user.email);
+        console.log("User ID:", user.id);
 
-    return { token, user };
+        const token = tokenCreate(user)
+        console.log("Token created successfully");
+
+        return { token, user };   
+    } catch (err) {
+        console.error("login failed", err)
+        throw err;
+    }
 };
 
 export const logoutUser = async () => {
