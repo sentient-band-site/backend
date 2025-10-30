@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import releaseRoutes from "./routes/releases";
 import authRoutes from "./routes/auth";
+import imageRoutes from "./routes/upload";
+
 
 dotenv.config();
 
@@ -25,41 +27,13 @@ app.use(
   })
 );
 
-// const allowedOrigins = [
-//   process.env.FRONTEND_URL,
-//   "http://localhost:3000",
-// ].filter((origin): origin is string => Boolean(origin));
-
-// app.use((req, _res, next) => {
-//   console.log("CORS Origin check:", req.headers.origin);
-//   next();
-// });
-
-// app.use(
-//   cors({
-//     origin: function(origin, callback) {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         console.warn("Blocked by CORS:", origin);
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true,
-//   })
-// );
-
-// app.options("*", cors({
-//   origin: allowedOrigins,
-//   credentials: true,
-// }));
-
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use("/api/releases", releaseRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/images", imageRoutes);
 
 app.get("/", (_req, res) => {
   res.send("running")
