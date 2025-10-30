@@ -1,4 +1,4 @@
-import { Request, Response, RequestHandler } from "express";
+import { Request, Response } from "express";
 import supabase from "../lib/supabase";
 import { FileParams } from "../types/common";
 
@@ -13,7 +13,7 @@ export const uploadImage = async (req: Request, res: Response) => {
         const file = req.file;
         const filePath = `uploads/${file.originalname}`;
 
-        const {data, error} = await supabase.storage
+        const { error } = await supabase.storage
         .from(bucket)
         .upload(filePath, file.buffer, {
             contentType: file.mimetype,
@@ -37,8 +37,9 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const getImage = async (req: Request<FileParams>, res: Response) => {
     try {
         const { fileName } = req.params;
+        const filePath = `uploads/${fileName}`
 
-        const {data, error} = await supabase.storage.from(bucket).createSignedUrl(fileName, 60 * 60);
+        const {data, error} = await supabase.storage.from(bucket).createSignedUrl(filePath, 60 * 60);
 
         if(error) throw error;
 
@@ -52,8 +53,9 @@ export const getImage = async (req: Request<FileParams>, res: Response) => {
 export const deleteImage =  async (req: Request<FileParams>, res: Response) => {
     try {
         const { fileName } = req.params;
+        const filePath = `uploads/${fileName}`
 
-        const { error } = await supabase.storage.from(bucket).remove([fileName])
+        const { error } = await supabase.storage.from(bucket).remove([filePath])
 
         if(error) throw error;
 

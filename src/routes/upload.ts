@@ -1,9 +1,8 @@
-import express, { RequestHandler } from "express";
+import express from "express";
 
 import { uploadImage, getImage, deleteImage } from "../controller/imageController";
 import upload from "../middleware/upload";
 import { authenticateToken, requireAdmin} from "../middleware/auth";
-import { FileParams } from "../types/common";
 
 const router = express.Router();
 
@@ -22,9 +21,9 @@ router.get(
 
 router.delete(
     "/:fileName", 
-    authenticateToken as RequestHandler<FileParams>, 
-    requireAdmin as RequestHandler<FileParams>, 
-    deleteImage as RequestHandler<FileParams>
+    authenticateToken, 
+    requireAdmin, 
+    deleteImage
 );
 
 export default router;
