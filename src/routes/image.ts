@@ -1,7 +1,7 @@
 import express from "express";
 
 import { uploadImage, getImage, deleteImage } from "../controller/imageController";
-import upload from "../middleware/upload";
+import upload from "../middleware/image";
 import { authenticateToken, requireAdmin} from "../middleware/auth";
 
 const router = express.Router();

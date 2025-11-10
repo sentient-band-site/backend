@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import releaseRoutes from "./routes/releases";
 import authRoutes from "./routes/auth";
-import imageRoutes from "./routes/upload";
+import imageRoutes from "./routes/image";
 
 
 dotenv.config();

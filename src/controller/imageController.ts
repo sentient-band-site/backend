@@ -11,7 +11,7 @@ export const uploadImage = async (req: Request, res: Response) => {
         }
 
         const file = req.file;
-        const filePath = `uploads/${file.originalname}`;
+        const filePath = `${file.originalname}`;
 
         const { error } = await supabase.storage
         .from(bucket)
@@ -37,7 +37,10 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const getImage = async (req: Request<FileParams>, res: Response) => {
     try {
         const { fileName } = req.params;
-        const filePath = `uploads/${fileName}`
+        const filePath = `${fileName}`;
+
+        console.log("Supabase bucket:", bucket);
+        console.log("Requested file path:", filePath);
 
         const {data, error} = await supabase.storage.from(bucket).createSignedUrl(filePath, 60 * 60);
 
@@ -53,7 +56,7 @@ export const getImage = async (req: Request<FileParams>, res: Response) => {
 export const deleteImage =  async (req: Request<FileParams>, res: Response) => {
     try {
         const { fileName } = req.params;
-        const filePath = `uploads/${fileName}`
+        const filePath = `${fileName}`;
 
         const { error } = await supabase.storage.from(bucket).remove([filePath])
 
