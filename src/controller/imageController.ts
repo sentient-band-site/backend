@@ -11,7 +11,8 @@ export const uploadImage = async (req: Request, res: Response) => {
         }
 
         const file = req.file;
-        const filePath = `${file.originalname}`;
+        const customName = req.query.name as string | undefined;
+        const filePath = customName ?? file.originalname;
 
         const { error } = await supabase.storage
         .from(bucket)
@@ -39,14 +40,13 @@ export const getImage = async (req: Request<FileParams>, res: Response) => {
         const { fileName } = req.params;
         const filePath = `${fileName}`;
 
-        console.log("Supabase bucket:", bucket);
-        console.log("Requested file path:", filePath);
+        const {data: publicURLData} = await supabase.storage.from(bucket).getPublicUrl(filePath);
 
-        const {data, error} = await supabase.storage.from(bucket).createSignedUrl(filePath, 60 * 60);
+        if(!publicURLData?.publicUrl) {
+            return res.status(404).json({error: "Image not found"});
+        }
 
-        if(error) throw error;
-
-        res.status(200).json({ url:data.signedUrl });
+        res.status(200).json({url: publicURLData.publicUrl});
     } catch (err: any) {
         console.error("Get failed:", err.message);
         res.status(500).json({error: err.message});
@@ -56,9 +56,8 @@ export const getImage = async (req: Request<FileParams>, res: Response) => {
 export const deleteImage =  async (req: Request<FileParams>, res: Response) => {
     try {
         const { fileName } = req.params;
-        const filePath = `${fileName}`;
 
-        const { error } = await supabase.storage.from(bucket).remove([filePath])
+        const { error } = await supabase.storage.from(bucket).remove([fileName])
 
         if(error) throw error;
 
