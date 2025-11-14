@@ -1,10 +1,22 @@
-import { File } from "multer";
-
 declare global {
     namespace Express {
         interface Request {
-            file?: File;
-            files?: File[];
+            file?: {
+                fieldname: string;
+                originalname: string;
+                encoding: string;
+                mimetype: string;
+                size: number;
+                buffer: Buffer;
+            };
+            files?: Array<{
+                fieldname: string;
+                originalname: string;
+                encoding: string;
+                mimetype: string;
+                size: number;
+                buffer: Buffer;
+            }>;
         }
     }
 }
