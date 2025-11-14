@@ -30,3 +30,47 @@ This backend exposes RESTful endpoints utilizied by the [Sentient Frontend](http
 ### **Filestorage and Database Hosting**
 #### ![Supabase](https://shields.io/badge/supabase-black?logo=supabase&style=for-the-badge)
 ### **Authentication** | JWT
+
+---
+
+## Project Setup
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** (v22.6.0+)
+- **npm** (v10.8.2+)
+
+### Installation
+
+1. **Clone the repository**:
+    ```bash
+    git clone [https://github.com/sentient-band-site/backend.git]
+    ```
+
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3. **Required Environment Variables**:
+    ```
+    JWT_SECRET=your_jwt_secret_key
+    FRONTEND_URL=http://localhost:[frontend port]
+
+    # Connection to Supabase via connection pooling
+    DATABASE_URL=http://postgresql:postgres.[supabase project key, pass and database locale]
+    # Direct connection to the database for migrations
+    DIRECT_URL=http://postgresql:postgres.[supabase project key, pass and database locale]
+
+    SUPABASE_URL=https://your-project-ref.supabase.co
+    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+    SUPABASE_BUCKET_NAME=artwork
+    ```
+
+5. **Run the application**:
+    ```bash
+    npm run dev
+    ```
+
+    The application will be accessible at `http://localhost:4000`.
