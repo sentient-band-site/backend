@@ -5,6 +5,7 @@ import type {AuthRequest, jwtPayload} from "../types/common"
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+    console.log("Cookies received:", req.cookies)
     const token = req.cookies?.token;
 
     if (!token) {
