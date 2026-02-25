@@ -1,14 +1,28 @@
 # Sentient Backend - API Service
 
-A secure TypeScript + Express backend API poweing the Sentient band website. Handles JWT authentication, image uploads, Supabase storage, Prisma, and protected admin routes for managing releases and media announcements.
+A TypeScript + Express backend API powering the Sentient band content management platform. This service provides authentication, release managment, and media handling through a RESTful interface consumed by the frontend application
 
-This backend exposes RESTful endpoints utilizied by the [Sentient Frontend](https://github.com/sentient-band-site/frontend/)
+Frontend repository:
+[Sentient Frontend](https://github.com/sentient-band-site/frontend/)
+
+---
+
+## System Role
+The backend acts as the authoritative service layer responsible for:
+- Authenticating users and issuing JWT tokens
+- Enforcing role-based access control
+- Managing release data in PostgreSQL via Prisma ORM
+- Handling media uploads and retrieval through Supabase Storage
+- Protecting sensitive operations behind middleware guards
+
+The frontend communicates exclusibley with this API and does not access the database or storage layer directly.
 
 ---
 
 ## Features
 
-- **JWT Authentication** - Login and protected admin routes; credential-based auth with session tokens via HTTP-only cookies
+- **JWT Authentication**
+-     Login and protected admin routes; credential-based auth with session tokens via HTTP-only cookies
 - **Release Management API** - CRUD operations for music/video releases; Prisma ORM with PostgreSQL
 - **Supabase Storage Integration** - Upload, sign, retrieve, delete images; automatically returns public or signed URLs
 - **Role-Based Access** - authenticateToken protects user routes; requireAdmin restricts sensitive endpoints
