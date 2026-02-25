@@ -21,18 +21,29 @@ The frontend communicates exclusibley with this API and does not access the data
 
 ## Features
 
-- **JWT Authentication**
--     Login and protected admin routes; credential-based auth with session tokens via HTTP-only cookies
-- **Release Management API** - CRUD operations for music/video releases; Prisma ORM with PostgreSQL
-- **Supabase Storage Integration** - Upload, sign, retrieve, delete images; automatically returns public or signed URLs
-- **Role-Based Access** - authenticateToken protects user routes; requireAdmin restricts sensitive endpoints
-- **Fully Typed** - Uses TypeScript from end to end; Shared types between controllers and routes
+- **JWT Authentication** - Credential-based login; HTTP-only cookie token storage; Middleware-protected routes
+- **Release Management API** - Full CRUD Operations for music and video releases; Prisma ORM managing PostgreSQL schema
+- **Supabase Storage Integration** - Image upload and deletion; Signed URL generation for protected assets; Public URL handling where appropriate
+- **Role-Based Access** - `authenticateToken` middleware for user verification; `requireAdmin` middleware for restricted endpoints
+- **TypeScript Service Layer** - Typed controllers and route handlers; Structured request/response handling
+
+---
+
+## Architecture Overview
+The backend follows a layered structure:
+- **Routing Layer** - Defines REST endpoints
+- **Middleware Layer** - Handles authentication and authorization
+- **Controller Layer** - Implements business logic
+- **Service / ORM Layer** - Interfaces with PostgreSQL via Prisma
+- **Storage Integration Layer** - Manages Supabase bucket operations
+
+This separation ensures maintainability, testability and secure handling of user and media data.
 
 ---
 
 ## Tech Stack
 
-### **Backend Framework** 
+### **Runtime and Framework** 
 #### ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white)
 #### ![Express](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=fff&style=flat)
 ### **Language**
@@ -41,9 +52,10 @@ The frontend communicates exclusibley with this API and does not access the data
 #### ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 ### **Database** 
 #### ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)
-### **Filestorage and Database Hosting**
+### **Storage and Hosting**
 #### ![Supabase](https://shields.io/badge/supabase-black?logo=supabase&style=for-the-badge)
-### **Authentication** | JWT
+### **Authentication**
+#### JWT (HTTP-only cookies)
 
 ---
 
@@ -61,11 +73,13 @@ Ensure you have the following installed:
 1. **Clone the repository**:
     ```bash
     git clone [https://github.com/sentient-band-site/backend.git]
+    cd backend
     ```
 
 2. **Install dependencies**:
     ```bash
     npm install
+    npm run dev
     ```
 3. **Required Environment Variables**:
     ```
@@ -82,6 +96,12 @@ Ensure you have the following installed:
     SUPABASE_BUCKET_NAME=artwork
     ```
 
+4. **Prisma Setup**:
+   ```
+   npx prisma generate
+   npx prisma migrate dev
+   ```
+   
 5. **Run the application**:
     ```bash
     npm run dev
